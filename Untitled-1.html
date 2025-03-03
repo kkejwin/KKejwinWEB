@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hádej Obec</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        img { width: 100%; height: auto; border-radius: 10px; }
+        input, button { padding: 10px; margin: 10px; width: 80%; }
+        button { background: #28a745; color: white; border: none; cursor: pointer; }
+        button:hover { background: #218838; }
+        .stats { margin-top: 20px; padding: 10px; background: #fff3cd; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hádej obec</h1>
+        <p id="hint">Šifra: <span id="villageHint"></span></p>
+        <img id="villageImage" src="" alt="Obrázek obce">
+        <p id="villageText"></p>
+        <input type="text" id="guess" placeholder="Napiš název obce">
+        <button onclick="checkAnswer()">Odeslat</button>
+        <p id="result"></p>
+    </div>
+    <div class="stats">
+        <p>👥 Dnes navštívilo: <span id="dailyVisits">0</span></p>
+        <p>🎮 Dnes hrálo: <span id="dailyPlayers">0</span></p>
+        <p>📅 Tento týden: <span id="weeklyPlayers">0</span></p>
+        <p>🗓️ Tento měsíc: <span id="monthlyPlayers">0</span></p>
+    </div>
+    <script>
+        const villages = [
+            { name: "Brzkov", hint: "B _ _ K _ _", img: "brzkov.jpg", text: "Malá obec na Vysočině známá svou krásnou přírodou." },
+            { name: "Jihlava", hint: "J_ _ H _ _ V __", img: "jihlava.jpg", text: "Krajské město s historickým centrem a známou zoo." },
+            { name: "Praha", hint: "P_ _ H _", img: "praha.jpg", text: "Hlavní město Česka, plné památek a historie." }
+        ];
+
+        let currentVillage = 0;
+        document.getElementById("villageImage").src = villages[currentVillage].img;
+        document.getElementById("villageHint").textContent = villages[currentVillage].hint;
+        document.getElementById("villageText").textContent = villages[currentVillage].text;
+
+        function checkAnswer() {
+            let userGuess = document.getElementById("guess").value.trim().toLowerCase();
+            let correctAnswer = villages[currentVillage].name.toLowerCase();
+            let resultText = document.getElementById("result");
+            
+            if (userGuess === correctAnswer) {
+                resultText.innerHTML = "✅ Správně!";
+                nextVillage();
+            } else {
+                resultText.innerHTML = "❌ Špatně, zkus to znovu.";
+            }
+        }
+
+        function nextVillage() {
+            currentVillage++;
+            if (currentVillage < villages.length) {
+                document.getElementById("villageImage").src = villages[currentVillage].img;
+                document.getElementById("villageHint").textContent = villages[currentVillage].hint;
+                document.getElementById("villageText").textContent = villages[currentVillage].text;
+                document.getElementById("guess").value = "";
+                document.getElementById("result").innerHTML = "";
+            } else {
+                document.getElementById("result").innerHTML = "🎉 Gratuluji, uhodl jsi všechny obce!";
+            }
+        }
+    </script>
+</body>
+</html>
